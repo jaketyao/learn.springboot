@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class CustomMessageSender {
@@ -27,10 +28,11 @@ public class CustomMessageSender {
     public CustomMessageSender(final RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
+    private final AtomicInteger counter = new AtomicInteger();
 
    // @Scheduled(fixedDelay = 3000L)
     public void sendMessage(int i) {
-        final CustomMessage message = new CustomMessage("Hello there!", new Random().nextInt(50), false);
+        final CustomMessage message = new CustomMessage("Hello there!",counter.incrementAndGet(), false);
         log.info("Sending message..." + message.toString()  + " i " + i);
         rabbitTemplate.convertAndSend(queueExchange, routingkey, message);
     }
