@@ -1,0 +1,16 @@
+server:
+  port: 8081
+
+# RABBIT (RabbitProperties)
+spring:
+    rabbitmq:
+       #appid: 10210
+       queuename: Q2
+       exchange: exchange2
+       routingkey: routingkey2
+       addresses: Centos67161:5672,Centos67162:5672,Centos67163:5672  # 5672
+       username: guest
+       password: guest
+       publisherConfirms: true
+       virtual-host: /
+

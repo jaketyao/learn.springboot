@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+
+	<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<Pattern>.%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n
+			</Pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>TRACE</level>
+		</filter>
+	</appender>
+	<appender name="dailyRollingFileAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--  window系统会在当前盘符下-->
+		<File>/test/rabbitmq/log/rabbimq-consumer.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<FileNamePattern>rest-demo.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<!-- keep 30 days' worth of history -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n
+			</Pattern>
+		</encoder>
+	</appender>
+	<include resource="org/springframework/boot/logging/logback/base.xml" />
+	
+	<!-- logback.xml 配置的内容可能覆盖application.properties配置的属性-->
+	<logger name="rabbitmq.ha.consumer" level="INFO" >
+		<appender-ref ref="dailyRollingFileAppender"/>
+	</logger>
+	
+	<logger name="org.springframework" level="INFO" >
+		<appender-ref ref="dailyRollingFileAppender"/>
+	</logger>
+	
+</configuration>
